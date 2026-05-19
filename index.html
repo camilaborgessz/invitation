@@ -4,18 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Jantar de Noivado · João & Camila</title>
+  <meta name="description" content="Temos a alegria de convidar você para o nosso Jantar de Noivado — 20 de Junho de 2025, às 18:30." />
+  <meta property="og:title" content="Jantar de Noivado · João & Camila" />
+  <meta property="og:description" content="20 de Junho de 2025 · às 18:30 · Recanto dos Pioneiros" />
+  <meta property="og:image" content="imgs/hero.png" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Jantar de Noivado · João & Camila" />
+  <meta name="twitter:image" content="imgs/hero.png" />
+  <link rel="icon" type="image/png" href="imgs/logo.png" />
   <link href="https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       background: #fbeedd;
+      background-image: radial-gradient(rgba(201, 169, 110, 0.12) 1px, transparent 1px);
+      background-size: 18px 18px;
       display: flex;
       justify-content: center;
       min-height: 100vh;
     }
 
-    /* ─── WRAPPER 393px (iPhone 16 do Figma) ─── */
     .card {
       width: 393px;
       max-width: 100vw;
@@ -23,10 +35,6 @@
       position: relative;
     }
 
-    /* ══════════════════════════════════
-       ① HERO — Group 5 (node 11:8)
-       w:393 h:554 rounded-bl/br 250px
-    ══════════════════════════════════ */
     .hero {
       position: relative;
       width: 393px;
@@ -37,16 +45,33 @@
     }
 
     .hero__photo {
-      /* node 2:3: left:-0.56% top:-7.04% w:100.64% h:107.15% */
       position: absolute;
       left: -0.56%;
       top: -7.04%;
       width: 100.64%;
       height: 107.15%;
       object-fit: cover;
+      will-change: transform;
+      animation: hero-zoom 1.6s ease forwards;
+      filter: sepia(20%) contrast(1.05) brightness(0.95);
     }
 
-    /* monograma: node 3:6 left:162 top:19 69×69 */
+    @keyframes hero-zoom {
+      from { transform: scale(1.08); }
+      to   { transform: scale(1); }
+    }
+
+    .hero__gradient {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 220px;
+      background: linear-gradient(to top, rgba(20,12,5,0.72) 0%, transparent 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
     .hero__logo {
       position: absolute;
       left: 162px;
@@ -55,12 +80,14 @@
       height: 69px;
       object-fit: contain;
       z-index: 2;
+      animation: logo-reveal 1.8s ease forwards;
     }
 
-    /* nomes — node 3:5: Pinyon Script 48px white
-       João:   left:118 top:404
-       e:      left:210 top:422
-       Camila: left:143 top:454  */
+    @keyframes logo-reveal {
+      from { opacity: 0; transform: rotate(-12deg) scale(0.85); }
+      to   { opacity: 1; transform: rotate(0deg) scale(1); }
+    }
+
     .hero__name {
       position: absolute;
       font-family: 'Pinyon Script', cursive;
@@ -68,19 +95,23 @@
       color: #ffffff;
       line-height: 1;
       z-index: 2;
+      letter-spacing: 0.04em;
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
+      opacity: 0;
+      animation: name-fadein 1s ease forwards;
+    }
+    .hero__name--joao   { animation-delay: 0.9s; }
+    .hero__name--e      { animation-delay: 1.1s; }
+    .hero__name--camila { animation-delay: 1.3s; }
+
+    @keyframes name-fadein {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .hero__name--joao   { left: 118px; top: 404px; }
     .hero__name--e      { left: 210px; top: 422px; font-size: 48px; }
     .hero__name--camila { left: 143px; top: 454px; }
 
-
-    /* ══════════════════════════════════
-       ② INVITE CARD
-       node 3:15 (foto fundo arredondada)
-       node 8:8  (overlay escuro)
-       left:24 top:495 w:345 h:566
-       border-radius topo: 200px
-    ══════════════════════════════════ */
     .invite {
       position: relative;
       margin: -59px auto 0;
@@ -89,6 +120,7 @@
       border-radius: 200px 200px 0 0;
       overflow: hidden;
       z-index: 1;
+      box-shadow: 0 -8px 40px rgba(66, 45, 28, 0.2);
     }
 
     .invite__photo {
@@ -98,54 +130,57 @@
       height: 100%;
       object-fit: cover;
       object-position: center top;
+      filter: sepia(30%) contrast(1.05) brightness(0.9);
     }
 
-    /* overlay rgba(66,45,28,0.85) */
     .invite__overlay {
       position: absolute;
       inset: 0;
-      background: rgba(66, 45, 28, 0.85);
+      background: rgba(66, 45, 28, 0.75);
     }
 
-    /* "Temos a alegria..." node 3:28
-       x:47 y:621 → dentro do invite: 621-495=126px do topo
-       w:299 h:68 Playfair 20px center */
     .invite__subtitle {
       position: absolute;
-      left: 23px;   /* 47-24 (margem do card) = 23px dentro do invite */
+      left: 23px;
       top: 126px;
       width: 299px;
       font-family: 'Playfair Display', serif;
       font-weight: 400;
       font-size: 20px;
       line-height: 1.241;
+      letter-spacing: 0.06em;
       color: #ffffff;
       text-align: center;
       z-index: 2;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
     }
 
-    /* "Jantar de noivado" node 3:20
-       x:49 y:773 → 773-495=278px do topo
-       w:296 Pinyon Script 48px */
     .invite__title {
       position: absolute;
-      left: 25px;   /* 49-24 */
-      top: 278px;
+      left: 25px;
+      top: 268px;
       width: 296px;
       font-family: 'Pinyon Script', cursive;
-      font-size: 48px;
+      font-size: 56px;
       line-height: 0.7124;
-      color: #ffffff;
       text-align: center;
       z-index: 2;
+      background: linear-gradient(105deg, #fff 30%, #c9a96e 50%, #fff 70%);
+      background-size: 250% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 4s linear infinite 1.5s;
     }
 
-    /* divisor alianças — node 11:6
-       x:57 y:980 → 980-495=485px do topo do invite
-       w:279 */
+    @keyframes shimmer {
+      from { background-position: 200% center; }
+      to   { background-position: -200% center; }
+    }
+
     .invite__divider {
       position: absolute;
-      left: 33px;   /* 57-24 */
+      left: 33px;
       top: 485px;
       width: 279px;
       display: flex;
@@ -156,35 +191,38 @@
     .invite__divider-line {
       width: 100px;
       height: 1px;
-      background: #d9d9d9;
       flex-shrink: 0;
     }
+    .invite__divider-line:first-child {
+      background: linear-gradient(to left, #c9a96e, transparent);
+    }
+    .invite__divider-line:last-child {
+      background: linear-gradient(to right, #c9a96e, transparent);
+    }
 
-    /* ícone alianças — node 11:5 (mask group)
-       x:168 y:980 w:57.23 h:80.84 */
     .invite__rings {
       width: 57px;
       height: 81px;
       object-fit: contain;
       flex-shrink: 0;
+      animation: rings-float 5s ease-in-out infinite;
+      transform-origin: center;
     }
 
+    @keyframes rings-float {
+      0%, 100% { transform: rotate(-4deg) scale(1); }
+      50%       { transform: rotate(4deg) scale(1.04); }
+    }
 
-    /* ══════════════════════════════════
-       ③ FOTO + DATA
-       node 13:5 (IMG_5623): left:0 top:976 w:397 h:596
-       node 13:6 (gradient):  left:0 top:1061 w:393 h:521
-    ══════════════════════════════════ */
     .photo-date {
       position: relative;
       width: 393px;
-      /* invite termina em 495+566=1061, foto começa em 976 → sobe 85px */
       margin-top: -85px;
       height: 596px;
       overflow: hidden;
+      background: rgb(30, 30, 30);
     }
 
-    /* foto — h:100.24% left:0.01% top:-7.27% */
     .photo-date__photo {
       position: absolute;
       width: 100%;
@@ -192,10 +230,9 @@
       left: 0.01%;
       top: -7.27%;
       object-fit: cover;
+      filter: sepia(18%) contrast(1.05) brightness(0.88);
     }
 
-    /* gradient escuro — começa 85px abaixo (1061-976)
-       h:521 linear-gradient(180°, rgba30/0.27→rgb30 83.6%) */
     .photo-date__gradient {
       position: absolute;
       left: 0;
@@ -204,21 +241,26 @@
       height: 521px;
       background: linear-gradient(
         179.95deg,
-        rgba(30, 30, 30, 0.27) 0%,
-        rgb(30, 30, 30) 83.566%
+        rgba(30, 30, 30, 0.05) 0%,
+        rgba(30, 30, 30, 0.55) 45%,
+        rgb(30, 30, 30) 75%,
+        rgb(111, 76, 46) 100%
       );
     }
 
-    /* bloco de data — node 14:23
-       x:47 y:1331 → 1331-976=355px do topo do photo-date
-       w:300 */
     .date-block {
       position: absolute;
       left: 0;
       right: 0;
       margin: 0 auto;
-      top: 355px;
+      top: 320px;
       width: 300px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(201, 169, 110, 0.2);
+      border-radius: 16px;
+      padding: 18px 0 14px;
     }
 
     .date-row {
@@ -233,13 +275,13 @@
       flex-direction: column;
       align-items: center;
       width: 100px;
-      gap: 8px;
+      gap: 6px;
     }
 
     .date-line {
       width: 80px;
       height: 1px;
-      background: #d9d9d9;
+      background: #c9a96e;
     }
 
     .date-label {
@@ -247,31 +289,47 @@
       font-weight: 400;
       font-size: 20px;
       line-height: 1;
-      color: #ffffff;
+      color: #c9a96e;
     }
 
-    /* "20" — node 14:22, 64px */
     .date-day {
       font-family: 'Playfair Display', serif;
       font-weight: 400;
       font-size: 64px;
       line-height: 1;
-      color: #ffffff;
+      color: #c9a96e;
       text-align: center;
       padding: 0 8px;
-      display: flex;
-      align-items: center;
+      transform: translateY(-8px);
     }
 
-    /* endereço — node 13:15
-       y:1432 → 1432-976=456px
-       x:80 w:233 Playfair 20px */
+    .date-year {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.55);
+      text-align: center;
+      margin-top: 4px;
+    }
+
+    .date-countdown {
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: #c9a96e;
+      text-align: center;
+      margin-top: 8px;
+      opacity: 0.85;
+    }
+
     .photo-date__address {
       position: absolute;
       left: 0;
       right: 0;
       margin: 0 auto;
-      top: 456px;
+      top: 468px;
       width: 233px;
       font-family: 'Playfair Display', serif;
       font-weight: 400;
@@ -281,29 +339,21 @@
       text-align: center;
     }
 
-    /* bairro — node 13:16
-       y:1492 → 1492-976=516px
-       w:151 Playfair 14px */
     .photo-date__bairro {
       position: absolute;
       left: 0;
       right: 0;
       margin: 0 auto;
-      top: 516px;
+      top: 528px;
       width: 151px;
       font-family: 'Playfair Display', serif;
       font-weight: 400;
       font-size: 14px;
       line-height: 1.241;
-      color: #ffffff;
+      color: rgba(255, 255, 255, 0.7);
       text-align: center;
     }
 
-
-    /* ══════════════════════════════════
-       ④ CTA — node 15:29
-       left:0 top:1582 w:393 h:355 bg:#6f4c2e
-    ══════════════════════════════════ */
     .cta {
       position: relative;
       width: 393px;
@@ -313,12 +363,12 @@
       z-index: 3;
     }
 
-    /* "Confirme sua presença" — node 16:42
-       x:25 y:1689 → 1689-1582=107px
-       w:344 Pinyon Script 40px */
+
     .cta__title {
       position: absolute;
-      left: 25px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
       top: 107px;
       width: 344px;
       font-family: 'Pinyon Script', cursive;
@@ -328,38 +378,39 @@
       text-align: center;
     }
 
-    /* botão — node 16:57
-       x:114 y:1758 → 1758-1582=176px
-       w:165 h:36 bg:rgba(66,45,28,0.85) radius:50px */
     .cta__btn {
       position: absolute;
-      left: 114px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
       top: 176px;
       width: 165px;
-      height: 36px;
+      height: 40px;
       background: rgba(66, 45, 28, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       border-radius: 50px;
       box-shadow: 0px 4px 25.8px 0px rgba(0, 0, 0, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       text-decoration: none;
-      transition: filter 0.2s;
+      transition: filter 0.2s, border-color 0.2s, transform 0.2s;
     }
-    .cta__btn:hover { filter: brightness(1.25); }
+    .cta__btn:hover {
+      filter: brightness(1.25);
+      border-color: rgba(255, 255, 255, 0.65);
+      transform: scale(1.04);
+    }
 
-    /* "Clique aqui" — Playfair Bold 14px */
     .cta__btn-label {
       font-family: 'Playfair Display', serif;
       font-weight: 700;
-      font-size: 14px;
-      line-height: 1.241;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      line-height: 1;
       color: #ffffff;
     }
 
-    /* logo rodapé — node 15:30
-       x:164 y:1821 → 1821-1582=239px
-       69×69 */
     .cta__logo {
       position: absolute;
       left: 164px;
@@ -396,7 +447,6 @@
       .invite { width: calc(100vw - 48px); }
     }
 
-    /* ── DESKTOP ── */
     @media (min-width: 394px) {
       body {
         align-items: flex-start;
@@ -412,7 +462,6 @@
       .photo-date, .cta { width: 393px; }
     }
 
-    /* ── ANIMAÇÕES DE SCROLL ── */
     .anim {
       opacity: 0;
       transform: translateY(48px);
@@ -439,11 +488,11 @@
 <body>
 <div class="card">
 
-  <!-- ① HERO -->
   <div class="hero">
     <img class="hero__photo"
       src="imgs/hero.png"
       alt="João e Camila" />
+    <div class="hero__gradient"></div>
     <img class="hero__logo"
       src="imgs/logo.png"
       alt="monograma" />
@@ -452,11 +501,10 @@
     <span class="hero__name hero__name--camila">Camila</span>
   </div>
 
-  <!-- ② INVITE CARD -->
   <div class="invite anim-scale">
     <img class="invite__photo"
       src="imgs/invite.png"
-      alt="" aria-hidden="true" />
+      alt="" aria-hidden="true" loading="lazy" />
     <div class="invite__overlay"></div>
     <p class="invite__subtitle anim anim-delay-1">Temos a alegria de lhe convidar para o nosso</p>
     <p class="invite__title anim anim-delay-2">Jantar de<br>noivado</p>
@@ -469,12 +517,11 @@
     </div>
   </div>
 
-  <!-- ③ FOTO + DATA -->
   <div class="photo-date anim">
     <img class="photo-date__photo"
       src="imgs/casal.png"
-      alt="Foto do casal" />
-    <div class="photo-date__gradient"></div>
+      alt="Foto do casal" loading="lazy" />
+    <!-- <div class="photo-date__gradient"></div> -->
 
     <div class="date-block anim anim-delay-1">
       <div class="date-row">
@@ -489,17 +536,16 @@
           <span class="date-label">Junho</span>
           <div class="date-line"></div>
         </div>
-      </div>
+      </div> 
+      <p class="date-countdown" id="countdown"></p>
     </div>
 
     <p class="photo-date__address anim anim-delay-2">Rua Antônio Pereira<br>de Lucena, 637 - Militar</p>
     <p class="photo-date__bairro anim anim-delay-3">Recanto dos Pioneiros</p>
   </div>
 
-  <!-- ④ CTA -->
   <div class="cta anim">
     <p class="cta__title anim anim-delay-1">Confirme sua presença</p>
-    <!-- ⬇️ Troque o href pelo link do seu Google Forms -->
     <a class="cta__btn"
       href="https://docs.google.com/forms/d/12Rh0CLOQXJI4yGkk9teS4FAaDxyKmO-M5zvemgjIGgQ/edit"
       target="_blank" rel="noopener noreferrer">
@@ -529,6 +575,23 @@
   }, { threshold: 0.12 });
 
   document.querySelectorAll('.anim, .anim-scale').forEach(el => observer.observe(el));
+
+  const heroPhoto = document.querySelector('.hero__photo');
+  window.addEventListener('scroll', () => {
+    heroPhoto.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+  }, { passive: true });
+
+  const eventDate = new Date('2026-06-20T18:30:00');
+  function updateCountdown() {
+    const diff = eventDate - new Date();
+    const el = document.getElementById('countdown');
+    if (!el) return;
+    if (diff <= 0) { el.textContent = '✦ hoje é o grande dia ✦'; return; }
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    el.textContent = days === 1 ? '✦ falta 1 dia ✦' : `✦ faltam ${days} dias ✦`;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
 </script>
 </body>
 </html>
